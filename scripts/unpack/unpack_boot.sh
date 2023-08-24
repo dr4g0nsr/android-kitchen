@@ -3,7 +3,7 @@
 clear
 
 # Source variables from the "dumpvars.sh" script located in the "scripts" directory
-source scripts/dumpvars.sh
+source ../dumpvars.sh
 
 echo "Unpacking boot.img"
 

@@ -2,6 +2,9 @@
 
 clear
 
+# Source variables from the "dumpvars.sh" script located in the "scripts" directory
+source scripts/dumpvars.sh
+
 # Check for dependencies: dialog and zip
 command -v dialog >/dev/null 2>&1 || { echo >&2 "Dialog is required but it's not installed. Aborting."; exit 1; }
 command -v zip >/dev/null 2>&1 || { echo >&2 "Zip is required but it's not installed. Aborting."; exit 1; }
@@ -9,7 +12,7 @@ command -v zip >/dev/null 2>&1 || { echo >&2 "Zip is required but it's not insta
 while true; do
     # Show the menu using dialog
     choice=$(dialog --clear --title "Android Kitchen 20230824" \
-                    --menu "Please select an option:" 20 50 15 \
+                    --menu "Please select an option:" 22 50 15 \
                     1 "Auto Unpack" \
                     2 "Unpack system" \
                     3 "Unpack vendor" \

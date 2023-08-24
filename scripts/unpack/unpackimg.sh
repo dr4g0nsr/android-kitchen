@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source variables from the "dumpvars.sh" script located in the "scripts" directory
-source scripts/dumpvars.sh
+source ../dumpvars.sh
 
 # Change directory to the tool's root directory
 cd $LOCALDIR

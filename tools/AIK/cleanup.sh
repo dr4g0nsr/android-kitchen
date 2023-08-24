@@ -23,5 +23,6 @@ case $1 in
   --quiet) ;;
   *) echo "Working directory cleaned.";;
 esac;
-return 0;
+
+exit 0
 
