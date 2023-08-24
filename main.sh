@@ -42,28 +42,42 @@ elif [ "$c" == "4" ]; then
 	bash ./scripts/unpack/unpack_boot.sh
 elif [ "$c" == "5" ]; then
 	bash ./scripts/unpack/unpack_super.sh
-# elif [ "$c" == "6" ]; then
-
-# elif [ "$c" == "7" ]; then
-
-# elif [ "$c" == "8" ]; then
-
-# elif [ "$c" == "9" ]; then
- 
-# elif [ "$c" == "10" ]; then
-
-
-# elif [ "$c" == "11" ]; then 
-
- 
-# elif [ "$c" == "12" ]; then 
-
- 
-# elif [ "$c" == "13" ]; then 
-
-
-# elif [ "$c" == "14" ]; then 
-
+elif [ "$c" == "6" ]; then 
+    echo "Automatic packaging in progress..."
+    # Assuming you have a script named "autopack.sh" for automatic packaging
+    bash ./scripts/pack/autopack.sh
+elif [ "$c" == "7" ]; then 
+    echo "Packaging system in progress..."
+    # Assuming you have a script named "pack_system.sh" for packaging system
+    bash ./scripts/pack/pack_system.sh
+elif [ "$c" == "8" ]; then 
+    echo "Packaging vendor in progress..."
+    # Assuming you have a script named "pack_vendor.sh" for packaging vendor
+    bash ./scripts/pack/pack_vendor.sh
+elif [ "$c" == "9" ]; then 
+    echo "Packaging boot.img in progress..."
+    # Assuming you have a script named "pack_boot.sh" for packaging boot.img
+    bash ./scripts/pack/pack_boot.sh
+elif [ "$c" == "10" ]; then 
+    echo "Packaging super.img dynamic partition image in progress..."
+    # Assuming you have a script named "pack_super.sh" for packaging super.img
+    bash ./scripts/pack/pack_super.sh
+elif [ "$c" == "11" ]; then 
+    echo "Embedding system/vendor.img into super.img in progress..."
+    # Assuming you have a script named "embed_images.sh" for embedding images
+    bash ./scripts/embed/embed_images.sh
+elif [ "$c" == "12" ]; then 
+    echo "Generating updater script for flashable package in progress..."
+    # Assuming you have a script named "generate_updater.sh" for generating updater script
+    bash ./scripts/generate/generate_updater.sh
+elif [ "$c" == "13" ]; then 
+    echo "Estimating system/vendor size in progress..."
+    # Assuming you have a script named "estimate_size.sh" for estimating sizes
+    bash ./scripts/estimate/estimate_size.sh
+elif [ "$c" == "14" ]; then 
+    echo "Decrypting OPPO OZIP in progress..."
+    # Assuming you have a script named "decrypt_ozip.sh" for decrypting OZIP
+    bash ./scripts/decrypt/decrypt_ozip.sh
 else
-	echo "Command not found"
-fi
+    echo "Command does not exist"
+fi 
