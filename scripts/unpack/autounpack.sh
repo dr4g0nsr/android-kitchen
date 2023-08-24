@@ -1,13 +1,41 @@
 #!/bin/bash
 
-clear 
+clear
 
 # Source variables from the "dumpvars.sh" script located in the "scripts" directory
 source scripts/dumpvars.sh
 
 echo "Automatically Extracting system/vendor/boot from ROM"
 
-read -p "Please rename the ROM you want to extract as update.zip, place it in the tool's root directory, and press Enter" var
+# List all zip files in the current directory and store them in an array
+zip_files=($(ls *.zip 2>/dev/null))
+
+# Check the number of zip files found
+num_zips=${#zip_files[@]}
+
+if [ "$num_zips" -eq 0 ]; then
+    echo "No zip files found in the current directory."
+    exit
+elif [ "$num_zips" -eq 1 ]; then
+    selected_zip="${zip_files[0]}"
+    echo "Using the found zip file: $selected_zip"
+else
+    echo "Multiple zip files found:"
+    for ((i = 0; i < num_zips; i++)); do
+        echo "[$i] ${zip_files[$i]}"
+    done
+    read -p "Enter the number of the zip file to use: " zip_choice
+    if [ "$zip_choice" -ge 0 ] && [ "$zip_choice" -lt "$num_zips" ]; then
+        selected_zip="${zip_files[$zip_choice]}"
+        echo "Using the selected zip file: $selected_zip"
+    else
+        echo "Invalid choice. Exiting."
+        exit
+    fi
+fi
+
+# Extract the chosen zip file
+unzip "$selected_zip" system* vendor* boot*
 
 boot_extract(){
 	rm -rf $LOCALDIR/boot
