@@ -35,7 +35,7 @@ else
 fi
 
 # Extract the chosen zip file
-unzip "$selected_zip" system* vendor* boot*
+unzip "$selected_zip" system* boot* vendor/*
 
 boot_extract(){
 	rm -rf $LOCALDIR/boot
