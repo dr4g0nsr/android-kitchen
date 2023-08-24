@@ -2,34 +2,37 @@
 
 clear
 
+# Source variables from the "dumpvars.sh" script located in the "scripts" directory
 source scripts/dumpvars.sh
 
-echo "super.img 动态分区镜像解包"
+echo "Unpacking super.img dynamic partition image"
 
-read -p "请将需要解包的super.img放入工具根目录，并按下回车" var
+read -p "Please place the super.img you want to unpack in the tool's root directory and press Enter" var
 
+# Remove any existing "super" directory and create a new one
 rm -rf $LOCALDIR/super
 mkdir $LOCALDIR/super
 
+# Use the "file" command to identify the type of the super.img file
 file $(find -type f -name 'super.img') > $LOCALDIR/file.txt
 
-echo "识别到$(find ./ -type f -name 'super.img')"
+echo "Identified $(find ./ -type f -name 'super.img')"
 
 if [ $(grep -o 'sparse' ./file.txt) ]; then
-	echo "当前super.img转换为rimg中......"
+	echo "Current super.img is in sparse format, converting to rimg..."
 	$bin/bin/simg2img $(find ./ -type f -name 'super.img') $LOCALDIR/superr.img
-	echo "转换完成"
-	echo "解包super.img中....."
+	echo "Conversion completed"
+	echo "Unpacking super.img..."
 	$bin/bin/lpunpack $LOCALDIR/superr.img $LOCALDIR/super
  	rm -rf $LOCALDIR/superr.img
- 	read -p "解包完成" var
+ 	read -p "Unpacking completed" var
 elif [ $(grep -o 'data' $LOCALDIR/file.txt) ]; then
- 	echo "解包super.img中....."
+ 	echo "Unpacking super.img..."
  	$bin/bin/lpunpack $(find ./ -type f -name 'super.img') ./super
  	rm -rf $LOCALDIR/super.img
- 	read -p "解包完成" var
+ 	read -p "Unpacking completed" var
 else
-	read -p "没有检测到需要解包的super.img文件" var
+	read -p "No super.img file to unpack detected" var
 fi
 
 rm -rf $LOCALDIR/file.txt
