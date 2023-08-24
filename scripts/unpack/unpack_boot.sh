@@ -1,26 +1,29 @@
-#/bin/bash
+#!/bin/bash
 
 clear
 
+# Source variables from the "dumpvars.sh" script located in the "scripts" directory
 source scripts/dumpvars.sh
 
-echo "boot.img解包"
+echo "Unpacking boot.img"
 
-read -p "请将需要解包的boot.img放入工具根目录，并按下回车" var
+read -p "Please place the boot.img you want to unpack in the tool's root directory and press Enter" var
 
+# Remove any existing "boot" directory and create a new one
 rm -rf $LOCALDIR/boot
-
 mkdir $LOCALDIR/boot
 
 if [ -e $LOCALDIR/boot.img ]; then
+	# Copy the boot.img to the AIK (Android Image Kitchen) directory
 	cp -frp $LOCALDIR/boot.img $bin/AIK/
- 	cd $bin/AIK
- 	./unpackimg.sh ./boot.img
- 	mv ./ramdisk $LOCALDIR/boot/
- 	mv ./split_img $LOCALDIR/boot/
- 	cd $LOCALDIR
+	cd $bin/AIK
+	# Unpack the boot.img using the "unpackimg.sh" script
+	./unpackimg.sh ./boot.img
+	mv ./ramdisk $LOCALDIR/boot/
+	mv ./split_img $LOCALDIR/boot/
+	cd $LOCALDIR
 else
- 	read -p "没有检测到需要解包的boot.img文件" var
+	read -p "No boot.img file to unpack detected" var
 fi
 
 bash main.sh
