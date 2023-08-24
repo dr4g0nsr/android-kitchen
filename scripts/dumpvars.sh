@@ -1,11 +1,14 @@
 #!/bin/bash
 
-LOCALDIRR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-LOCALDIR="$LOCALDIRR/.."
+REALPATH=`realpath ./..`
+
+LOCALDIR="$REALPATH"
 HOST="$(uname)"
-tmpdir="$LOCALDIRR/../tmp"
-bin="$LOCALDIRR/../tools"
-script="$LOCALDIRR"
+tmpdir="$REALPATH/tmp"
+bin="$REALPATH/tools"
+script="$REALPATH/script"
 unpack="$script/unpack"
 pack="$script/pack"
 day=$(date "+%Y%m%d")
+
+echo "Root dir found: $REALPATH"

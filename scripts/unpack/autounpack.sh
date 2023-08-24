@@ -35,7 +35,11 @@ else
 fi
 
 # Extract the chosen zip file
-unzip "$selected_zip" system* boot* vendor/*
+unzip $selected_zip system* boot* vendor/*
+boot_extract
+system_extract
+vendor_extract
+echo "Extraction complete, press enter"
 
 boot_extract(){
 	rm -rf $LOCALDIR/boot
@@ -81,16 +85,5 @@ vendor_extract(){
 		bash $unpack/unpackimg.sh vendor
 	fi
 }
-
-if [ -e update.zip ]; then
-	echo "Detected update.zip"
-	unzip $LOCALDIR/update.zip system* vendor* boot*
-	boot_extract
-	system_extract
-	vendor_extract
-	echo "Extraction complete"
-else
-	read -p "No update.zip to extract detected" var
-fi
 
 bash main.sh
