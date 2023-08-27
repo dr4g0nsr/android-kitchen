@@ -3,7 +3,7 @@
 clear
 
 # Source variables from the "dumpvars.sh" script located in the "scripts" directory
-source ../dumpvars.sh
+source scripts/dumpvars.sh
 
 echo "Automatically Extracting system/vendor/boot from ROM"
 
@@ -48,20 +48,36 @@ unpack_files() {
 	unzip "$selected_zip" -d $selected_zip_full_path
 	if [[ $? -gt 0 ]]; then
 		echo "Unzip failed"
+		read -p "Press enter" var
 		exit 1
 	fi
 }
 
-boot_extract(){
-	rm -rf $selected_zip_full_path/boot
+boot_extract() {
+	if [[ -d "$selected_zip_full_path/boot" ]]; then
+		rm -rf $selected_zip_full_path/boot
+	fi
 	mkdir $selected_zip_full_path/boot
 	if [ -e $selected_zip_full_path/boot.img ]; then
-		cp -frp $selected_zip_full_path/boot.img $bin/AIK/
-		cd $bin/AIK
-		./unpackimg.sh ./boot.img
-		mv ./ramdisk $selected_zip_full_path/boot/
-		mv ./split_img $selected_zip_full_path/boot/
-		cd $selected_zip_full_path
+		$bin/AIK/unpackimg.sh $selected_zip_full_path/boot.img
+		if [[ $? -gt 0 ]]; then
+			echo "Error: unpackimg.sh failed"
+			read -p "Press enter" var
+			exit 1
+		fi
+		mv $bin/AIK/ramdisk $selected_zip_full_path/boot/
+		if [[ $? -gt 0 ]]; then
+			echo "Error: ramdisk failed"
+			read -p "Press enter" var
+			exit 1
+		fi
+		mv $bin/AIK/split_img $selected_zip_full_path/boot/
+		if [[ $? -gt 0 ]]; then
+			echo "Error: split_img failed"
+			read -p "Press enter" var
+			exit 1
+		fi
+		cd $REALPATH
 	fi
 }
 
@@ -69,15 +85,45 @@ system_extract(){
 	if [ -e "$selected_zip_full_path/system.new.dat.br" ]; then
 		echo "Detected system.new.dat.br"
 		"$bin/bin/brotli" -d "$selected_zip_full_path/system.new.dat.br"
-		python "$bin/sdat2img.py" system.transfer.list system.new.dat system.img
-		bash $unpack/unpackimg.sh system
+		if [[ $? -gt 0 ]]; then
+			echo "brotli unpack failed"
+			read -p "Press enter" var
+			exit 1
+		fi
+		python "$bin/sdat2img.py" $selected_zip_full_path/system.transfer.list $selected_zip_full_path/system.new.dat $selected_zip_full_path/system.img
+		if [[ $? -gt 0 ]]; then
+			echo "sdat2img.py failed"
+			read -p "Press enter" var
+			exit 1
+		fi
+		bash $unpack/unpackimg.sh system $selected_zip_full_path
+		if [[ $? -gt 0 ]]; then
+			echo "unpackimg.sh system failed"
+			read -p "Press enter" var
+			exit 1
+		fi
 	elif [ -e "$selected_zip_full_path/system.new.dat" ]; then
 		echo "Detected system.new.dat"
-		python "$bin/sdat2img.py" system.transfer.list system.new.dat system.img
-		bash $unpack/unpackimg.sh system
+		python "$bin/sdat2img.py" $selected_zip_full_path/system.transfer.list $selected_zip_full_path/system.new.dat $selected_zip_full_path/system.img
+		if [[ $? -gt 0 ]]; then
+			echo "sdat2img.py failed"
+			read -p "Press enter" var
+			exit 1
+		fi
+		bash $unpack/unpackimg.sh system $selected_zip_full_path
+		if [[ $? -gt 0 ]]; then
+			echo "unpackimg.sh system failed"
+			read -p "Press enter" var
+			exit 1
+		fi
 	elif [ -e "$selected_zip_full_path/system.img" ]; then
 		echo "Detected system.img"
-		bash $unpack/unpackimg.sh system
+		bash $unpack/unpackimg.sh system $selected_zip_full_path
+		if [[ $? -gt 0 ]]; then
+			echo "unpackimg.sh system failed"
+			read -p "Press enter" var
+			exit 1
+		fi
 	fi
 }
 
@@ -100,7 +146,7 @@ vendor_extract(){
 unpack_files
 boot_extract
 system_extract
-vendor_extract
+#vendor_extract
 
 read -p "Extraction complete, press enter" var
 

@@ -3,7 +3,7 @@
 clear
 
 # Source variables from the "dumpvars.sh" script located in the "scripts" directory
-source ../dumpvars.sh
+source scripts/dumpvars.sh
 
 echo "Unpacking super.img dynamic partition image"
 

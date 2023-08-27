@@ -30,7 +30,7 @@ while true; do
                     0 "Exit" 3>&1 1>&2 2>&3)
 
     case $choice in
-        1) bash ./scripts/unpack/autounpack.sh ;;
+        1) bash $unpack/autounpack.sh && sleep 1 ;;
         2) bash ./scripts/unpack/unpack_system.sh ;;
         3) bash ./scripts/unpack/unpack_vendor.sh ;;
         4) bash ./scripts/unpack/unpack_boot.sh ;;

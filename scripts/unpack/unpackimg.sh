@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Source variables from the "dumpvars.sh" script located in the "scripts" directory
-source ../dumpvars.sh
+source scripts/dumpvars.sh
 
 # Change directory to the tool's root directory
-cd $LOCALDIR
+cd "$2"
 
 # Get the argument passed to the script (assuming it's a species identifier)
 species="$1"
